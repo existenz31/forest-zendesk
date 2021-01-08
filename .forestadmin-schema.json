@@ -25,6 +25,21 @@
       "inverseOf": null,
       "validations": []
     }, {
+      "field": "dummy2",
+      "type": "String",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": false,
+      "isPrimaryKey": false,
+      "isReadOnly": true,
+      "isRequired": false,
+      "isSortable": false,
+      "isVirtual": true,
+      "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
       "field": "email",
       "type": "String",
       "defaultValue": null,
@@ -111,6 +126,36 @@
       "reference": null,
       "inverseOf": null,
       "validations": []
+    }, {
+      "field": "zendesk_requested_tickets",
+      "type": ["String"],
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": false,
+      "isPrimaryKey": false,
+      "isReadOnly": true,
+      "isRequired": false,
+      "isSortable": false,
+      "isVirtual": true,
+      "reference": "zendesk_tickets.id",
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "zendesk_user",
+      "type": "String",
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": false,
+      "isPrimaryKey": false,
+      "isReadOnly": true,
+      "isRequired": false,
+      "isSortable": false,
+      "isVirtual": true,
+      "reference": "zendesk_users.id",
+      "inverseOf": null,
+      "validations": []
     }],
     "segments": [],
     "actions": []
@@ -123,7 +168,7 @@
     "isSearchable": true,
     "isVirtual": true,
     "onlyForRelationships": false,
-    "paginationType": "cursor",
+    "paginationType": "page",
     "fields": [{
       "field": "assignee",
       "type": "String",
@@ -328,7 +373,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -343,7 +388,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -358,7 +403,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -373,7 +418,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -388,7 +433,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -403,7 +448,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -418,7 +463,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -433,7 +478,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -448,7 +493,7 @@
       "isReadOnly": false,
       "isRequired": false,
       "isSortable": true,
-      "isVirtual": false,
+      "isVirtual": true,
       "reference": null,
       "inverseOf": null,
       "validations": []
@@ -480,6 +525,21 @@
       "isSortable": true,
       "isVirtual": true,
       "reference": null,
+      "inverseOf": null,
+      "validations": []
+    }, {
+      "field": "zendesk_requested_tickets",
+      "type": ["String"],
+      "defaultValue": null,
+      "enums": null,
+      "integration": null,
+      "isFilterable": true,
+      "isPrimaryKey": false,
+      "isReadOnly": false,
+      "isRequired": false,
+      "isSortable": true,
+      "isVirtual": true,
+      "reference": "zendesk_tickets.id",
       "inverseOf": null,
       "validations": []
     }],

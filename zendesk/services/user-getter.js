@@ -14,7 +14,7 @@ class UserGetter extends AbstractGetter {
     
     })
     .then( (response) => {
-      console.log(response);
+      //console.log(response);
       return response.data.user;
     });
   };
@@ -28,7 +28,7 @@ class UserGetter extends AbstractGetter {
       }
     })
     .then( (response) => {
-      console.log(response);
+      //console.log(response);
       return response.data.user;
     });
   }

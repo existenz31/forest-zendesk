@@ -12,7 +12,7 @@ class TicketGetter extends AbstractGetter {
       },
     })
     .then( (response) => {
-      console.log(response);
+      //console.log(response);
       return response.data.ticket;
     });
   };

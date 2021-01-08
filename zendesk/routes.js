@@ -18,8 +18,8 @@ var path = require('forest-express/dist/services/path');
 var ConfigStore = require('forest-express/dist/services/config-store');
 var configStore = ConfigStore.getInstance();
 
-module.exports = function Routes(app, model, Implementation, opts) {
-  Implementation = configStore.Implementation;
+module.exports = function Routes(app, model, opts) {
+  var Implementation = configStore.Implementation;
   var modelName = Implementation.getModelName(model);
   var integrationInfo;
 

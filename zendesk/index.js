@@ -9,9 +9,13 @@ var Routes = require('./routes');
 
 var Setup = require('./setup');
 
-function Checker(opts, Implementation, app) {
+var ConfigStore = require('forest-express/dist/services/config-store');
+var configStore = ConfigStore.getInstance();
+
+function Checker(opts, app) {
   var integrationValid = false;
   this.apiKey = opts.apiKey;
+  this.app = app;
 
   function hasIntegration() {
     return opts.apiKey;
@@ -43,13 +47,13 @@ function Checker(opts, Implementation, app) {
     }
   }
 
-  this.defineRoutes = function (app, model) {
+  this.defineRoutes = function (model) {
     if (!integrationValid) {
       return;
     }
 
     if (integrationCollectionMatch(opts, model)) {
-      new Routes(app, model, Implementation, opts).perform();
+      new Routes(this.app, model, opts).perform();
     }
   };
 
@@ -58,20 +62,22 @@ function Checker(opts, Implementation, app) {
       return;
     }
 
+    var Implementation = configStore.Implementation;
     _.each(opts.mapping, function (collectionAndFieldName) {
       Setup.createCollections(Implementation, collections, collectionAndFieldName);
     });
   };
 
-  this.defineFields = function (model, schema) {
-    if (!integrationValid) {
-      return;
-    }
+  // this.defineFields = function (model, schema) {
+  //   if (!integrationValid) {
+  //     return;
+  //   }
 
-    if (integrationCollectionMatch(opts, model)) {
-      Setup.createFields(Implementation, model, schema.fields);
-    }
-  };
+  //   if (integrationCollectionMatch(opts, model)) {
+  //     var Implementation = configStore.Implementation;
+  //     Setup.createFields(Implementation, model, schema.fields);
+  //   }
+  // };
 
   this.defineSerializationOption = function (model, schema, dest, field) {
     if (integrationValid && field.integration === 'zendesk') {
@@ -84,6 +90,7 @@ function Checker(opts, Implementation, app) {
         ignoreRelationshipData: true,
         relationshipLinks: {
           related: function related(dataSet) {
+            var Implementation = configStore.Implementation;
             return {
               href: "/forest/".concat(Implementation.getModelName(model), "/").concat(dataSet[schema.idField], "/").concat(field.field)
             };
@@ -97,8 +104,6 @@ function Checker(opts, Implementation, app) {
   var collections = _.values(Schemas.schemas);
   this.defineCollections(collections);
   Schemas.schemas = _.mapValues(_.keyBy(collections, 'name'));
-
-
 //  let usersSchema = Schemas.schemas['users'];
 //  let usersModel = Implementation.getModels()['users'];
 

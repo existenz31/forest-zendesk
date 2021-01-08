@@ -5,14 +5,84 @@ var _ = require('lodash');
 var _require = require('forest-express/dist/utils/integrations'),
     pushIntoApimap = _require.pushIntoApimap;
 
-const UserUtil = require('../zendesk/services/user-util');
-var ConfigStore = require('forest-express/dist/services/config-store');
+// const UserUtil = require('../zendesk/services/user-util');
 
 const INTEGRATION_NAME = 'zendesk';
 
-var ConfigStore = require('forest-express/dist/services/config-store');
-
 exports.createCollections = function (Implementation, apimap, collectionAndFieldName) {
+  pushIntoApimap(apimap, {
+    name: "zendesk_users",
+    displayName: "Zendesk Users",
+    icon: 'comments-o',
+    idField: 'id',
+    integration: INTEGRATION_NAME,
+    isVirtual: true,
+    isReadOnly: true,
+    paginationType: 'page',
+    fields: [{
+      field: 'id',
+      type: 'Number',
+      isPrimaryKey: true,
+      isVirtual: true,
+      isFilterable: false
+    }, {
+      field: 'name',
+      type: 'String',
+      isVirtual: true,
+      isFilterable: true
+    }, {
+      field: 'email',
+      type: 'String',
+      isVirtual: true,
+      isFilterable: true
+    }, {
+      field: 'role',
+      type: 'String',
+      isVirtual: true,
+      isFilterable: true
+    }, {
+      field: 'phone',
+      type: 'String',
+      isVirtual: true,
+      isFilterable: false
+    }, {
+      field: 'last_login_at',
+      type: 'Date',
+      isVirtual: true,
+      isFilterable: false
+    }, {
+      field: 'verified',
+      type: 'Boolean',
+      isVirtual: true,
+      isVirtual: true,
+    }, {
+      field: 'active',
+      type: 'Boolean',
+      isVirtual: true,
+      isFilterable: true
+    }, {
+      field: 'created_at',
+      type: 'Date',
+      isVirtual: true,
+      isFilterable: false
+    }, {
+      field: 'updated_at',
+      type: 'Date',
+      isVirtual: true,
+      isFilterable: false
+    }, {
+      field: 'direct_url',
+      type: 'String',
+      isVirtual: true,
+      isFilterable: false,
+    }, {
+      field: 'zendesk_requested_tickets',
+      type: ['String'],
+      reference: 'zendesk_tickets.id',
+      isVirtual: true,
+      isFilterable: true,
+    }, ]
+  });
 
   pushIntoApimap(apimap, {
     name: "zendesk_tickets",
@@ -22,7 +92,7 @@ exports.createCollections = function (Implementation, apimap, collectionAndField
     integration: INTEGRATION_NAME,
     isVirtual: true,
     isReadOnly: true,
-    paginationType: 'cursor',
+    paginationType: 'page',
     fields: [{
       field: 'id',
       type: 'Number',
@@ -86,102 +156,46 @@ exports.createCollections = function (Implementation, apimap, collectionAndField
       type: 'String',
       isFilterable: false,
       isVirtual: true,
-    } ],
+    }
+  ],
     actions: []
   });
-  pushIntoApimap(apimap, {
-    name: "zendesk_users",
-    displayName: "Zendesk Users",
-    icon: 'comments-o',
-    idField: 'id',
-    integration: INTEGRATION_NAME,
-    isVirtual: true,
-    isReadOnly: true,
-    paginationType: 'page',
-    fields: [{
-      field: 'id',
-      type: 'Number',
-      isPrimaryKey: true,
-      isFilterable: false
-    }, {
-      field: 'name',
-      type: 'String',
-      isFilterable: true
-    }, {
-      field: 'email',
-      type: 'String',
-      isFilterable: true
-    }, {
-      field: 'role',
-      type: 'String',
-      isFilterable: true
-    }, {
-      field: 'phone',
-      type: 'String',
-      isFilterable: false
-    }, {
-      field: 'last_login_at',
-      type: 'Date',
-      isFilterable: false
-    }, {
-      field: 'verified',
-      type: 'Boolean',
-      isVirtual: true,
-    }, {
-      field: 'active',
-      type: 'Boolean',
-      isFilterable: true
-    }, {
-      field: 'created_at',
-      type: 'Date',
-      isFilterable: false
-    }, {
-      field: 'updated_at',
-      type: 'Date',
-      isVirtual: true,
-      isFilterable: false
-    }, {
-      field: 'direct_url',
-      type: 'String',
-      isFilterable: false,
-    } ]
-  });
+
 };
 
 exports.createFields = function (Implementation, model, schemaFields) {
-  schemaFields.push({
-    field: 'zendesk_requested_tickets',
-    //displayName: 'Tickets',
-    type: ['String'],
-    reference: 'zendesk_tickets.id',
-    // column: null,
-    isFilterable: false,
-    isReadOnly: false,
-    isVirtual: true,
-    isSortable: true,
-    // relationship: 'HasMany',
-    // integration: INTEGRATION_NAME,
-  });
-  schemaFields.push({
-    field: 'zendesk_user',
-    //displayName: 'ZE User',
-    type: 'String',
-    reference: 'zendesk_users.id',
-    // column: null,
-    isFilterable: false,
-    isReadOnly: false,
-    isVirtual: true,
-    isSortable: true,
-    // integration: INTEGRATION_NAME,
-    get: (record) => {
-      // let userGetter = new UserGetter();
-      // return userGetter.findByEmail(user.email);
-      var configStore = ConfigStore.getInstance();
-      let userUtil = new UserUtil(configStore.zendesk.apiKey);
-      if (!record.currentUser) return null;
-      let zendesk_user = userUtil.findByEmail(record.currentUser.email);
-      delete record.currentUser;
-      return zendesk_user;
-    },
-  });  
+  // schemaFields.push({
+  //   field: 'zendesk_requested_tickets',
+  //   //displayName: 'Tickets',
+  //   type: ['String'],
+  //   reference: 'zendesk_tickets.id',
+  //   // column: null,
+  //   isFilterable: false,
+  //   isReadOnly: false,
+  //   isVirtual: true,
+  //   isSortable: true,
+  //   // relationship: 'HasMany',
+  //   // integration: INTEGRATION_NAME,
+  // });
+  // schemaFields.push({
+  //   field: 'zendesk_user',
+  //   //displayName: 'ZE User',
+  //   type: 'String',
+  //   reference: 'zendesk_users.id',
+  //   // column: null,
+  //   isFilterable: false,
+  //   isReadOnly: false,
+  //   isVirtual: true,
+  //   isSortable: true,
+  //   // integration: INTEGRATION_NAME,
+  //   get: (record) => {
+  //     // let userGetter = new UserGetter();
+  //     // return userGetter.findByEmail(user.email);
+  //     let userUtil = new UserUtil();
+  //     if (!record.currentUser) return null;
+  //     let zendesk_user = userUtil.findByEmail(record.currentUser.email);
+  //     delete record.currentUser;
+  //     return zendesk_user;
+  //   },
+  // });  
 };

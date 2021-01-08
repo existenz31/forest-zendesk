@@ -3,11 +3,14 @@
 const axios = require('axios');
 const ZENDESK_URL_PREFIX = `https://${process.env.ZENDESK_SUBDOMAIN}.zendesk.com`;
 
+var ConfigStore = require('forest-express/dist/services/config-store');
+var configStore = ConfigStore.getInstance();
+
 class UserUtil {
-  constructor(apiKey) {
-    this.apiKey = apiKey;
+  constructor() {
+    this.apiKey = configStore.zendesk.apiKey;
   } 
-  
+
   getToken (email) {
     return Buffer.from(`${email}/token:${this.apiKey}`).toString('base64');
   };

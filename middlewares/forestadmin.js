@@ -19,7 +19,7 @@ module.exports = async function forestadmin(app) {
   // client.defineCollections(collections);
   // Schemas.schemas = collections;
 
-  var client = new zendesk({mapping: 'users.email', apiKey: process.env.ZENDESK_API_TOKEN}, null, app);
+  var client = new zendesk({mapping: 'users.email', apiKey: process.env.ZENDESK_API_TOKEN}, app);
 
   var configStore = ConfigStore.getInstance();
   configStore.zendesk = client;
@@ -32,21 +32,8 @@ module.exports = async function forestadmin(app) {
     sequelize,
   }));
 
- let usersSchema = Schemas.schemas['users'];
- let usersModel = models['users'];
- 
- client.defineFields(usersModel, usersSchema);
- Schemas.schemas['users'] = usersSchema;  
- client.defineRoutes(app, usersModel);
+  let usersModel = models['users'];
+  client.defineRoutes(usersModel);
 
-  // var configStore = ConfigStore.getInstance();
-  // var client = new zendesk({mapping: 'users.email', apiKey: process.env.ZENDESK_API_TOKEN}, configStore.Implementation, app);
-  // configStore.zendesk = client;
-  
-  // generateAndSendSchema({envSecret: process.env.FOREST_ENV_SECRET});
-
-  // client.defineCollections();
-  // client.defineSegments();
-  // client.defineFields();
   console.log(chalk.cyan('Your admin panel is available here: https://app.forestadmin.com/projects'));
 };
