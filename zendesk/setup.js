@@ -10,6 +10,8 @@ var ConfigStore = require('forest-express/dist/services/config-store');
 
 const INTEGRATION_NAME = 'zendesk';
 
+var ConfigStore = require('forest-express/dist/services/config-store');
+
 exports.createCollections = function (Implementation, apimap, collectionAndFieldName) {
 
   pushIntoApimap(apimap, {

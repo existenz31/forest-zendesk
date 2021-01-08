@@ -19,6 +19,11 @@ module.exports = async function forestadmin(app) {
   // client.defineCollections(collections);
   // Schemas.schemas = collections;
 
+  var client = new zendesk({mapping: 'users.email', apiKey: process.env.ZENDESK_API_TOKEN}, null, app);
+
+  var configStore = ConfigStore.getInstance();
+  configStore.zendesk = client;
+
   app.use(await Liana.init({
     modelsDir: path.join(__dirname, '../models'),
     configDir: path.join(__dirname, '../forest'),
@@ -27,11 +32,18 @@ module.exports = async function forestadmin(app) {
     sequelize,
   }));
 
-  var configStore = ConfigStore.getInstance();
-  var client = new zendesk({mapping: 'users.email', apiKey: process.env.ZENDESK_API_TOKEN}, configStore.Implementation, app);
-  configStore.zendesk = client;
+ let usersSchema = Schemas.schemas['users'];
+ let usersModel = models['users'];
+ 
+ client.defineFields(usersModel, usersSchema);
+ Schemas.schemas['users'] = usersSchema;  
+ client.defineRoutes(app, usersModel);
+
+  // var configStore = ConfigStore.getInstance();
+  // var client = new zendesk({mapping: 'users.email', apiKey: process.env.ZENDESK_API_TOKEN}, configStore.Implementation, app);
+  // configStore.zendesk = client;
   
-  generateAndSendSchema({envSecret: process.env.FOREST_ENV_SECRET});
+  // generateAndSendSchema({envSecret: process.env.FOREST_ENV_SECRET});
 
   // client.defineCollections();
   // client.defineSegments();

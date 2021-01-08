@@ -99,13 +99,12 @@ function Checker(opts, Implementation, app) {
   Schemas.schemas = _.mapValues(_.keyBy(collections, 'name'));
 
 
- let usersSchema = Schemas.schemas['users'];
- let usersModel = Implementation.getModels()['users'];
+//  let usersSchema = Schemas.schemas['users'];
+//  let usersModel = Implementation.getModels()['users'];
 
-  this.defineFields(usersModel, usersSchema);
-//  Schemas.schemas['users'] = usersSchema;
-  
-  this.defineRoutes(app, usersModel);
+//   this.defineFields(usersModel, usersSchema);
+//  Schemas.schemas['users'] = usersSchema;  
+// this.defineRoutes(app, usersModel);
 
 }
 
